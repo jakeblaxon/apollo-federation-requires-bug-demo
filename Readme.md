@@ -1,4 +1,20 @@
-## Apollo Federation Demo
+## Apollo Federation Demo -- Nested Requires Bug Example
+
+To see the bug, use the following query in the gateway:
+
+```
+{
+  me {
+    reviews {
+      id
+    }
+    otherField
+  }
+}
+```
+Then look at the console for the reviews service. You will notice that `{ __typename: 'User', id: '1', nested1: { nested2: { b: 'b' } } }` is printed twice, indicating that `b` is the only required field that is ever provided. The `a` field is never provided to the User.reviews resolver.
+
+---
 
 This repository is a demo of using Apollo Federation to build a single schema on top of multiple services. The microservices are located under the [`./services`](./services/) folder and the gateway that composes the overall schema is in the [`gateway.js`](./gateway.js) file.
 
