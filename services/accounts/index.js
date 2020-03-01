@@ -10,6 +10,16 @@ const typeDefs = gql`
     id: ID!
     name: String
     username: String
+    nested1: Nested1
+  }
+
+  type Nested1 {
+    nested2: Nested2
+  }
+
+  type Nested2 {
+    a: String
+    b: String
   }
 `;
 
@@ -44,7 +54,13 @@ const users = [
     id: "1",
     name: "Ada Lovelace",
     birthDate: "1815-12-10",
-    username: "@ada"
+    username: "@ada",
+    nested1: {
+      nested2: {
+        a: "a",
+        b: "b"
+      }
+    }
   },
   {
     id: "2",

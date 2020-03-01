@@ -12,7 +12,18 @@ const typeDefs = gql`
   extend type User @key(fields: "id") {
     id: ID! @external
     username: String @external
-    reviews: [Review]
+    nested1: Nested1 @external
+    reviews: [Review] @requires(fields: "nested1 { nested2 { a } }")
+    otherField: String @requires(fields: "nested1 { nested2 { b } }")
+  }
+
+  type Nested1 {
+    nested2: Nested2
+  }
+
+  type Nested2 {
+    a: String
+    b: String
   }
 
   extend type Product @key(fields: "upc") {
@@ -29,7 +40,11 @@ const resolvers = {
   },
   User: {
     reviews(user) {
+      console.log(user)
       return reviews.filter(review => review.authorID === user.id);
+    },
+    otherField(user) {
+      console.log(user)
     },
     numberOfReviews(user) {
       return reviews.filter(review => review.authorID === user.id).length;
